@@ -1,0 +1,13 @@
+#include <iostream>
+#include "snclientudp.h"
+
+using namespace std;
+
+int main()
+{
+    SNClientUDP client;
+    client.bind
+    cout << "POK" << endl;
+    return 0;
+}
+
