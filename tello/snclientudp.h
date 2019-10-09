@@ -13,11 +13,13 @@ private :
 public :
     SNClientUDP();
     ~SNClientUDP();
-    void ModifierPortServeur(unsigned short port);
-    void ModifierAdresseIPServeur(const char adresse[16]);
-    bool EnvoyerMessage(const char * message, int taille);
+    inline void ModifierPortServeur() { portServeur = 8889;}
+    inline void ModifierAdresseIPServeur() {adresseIPServeur = "192.168.10.1";}
+    bool EnvoyerMessage(char * message);
     int RecevoirMessage(char * message, int taille);
 };
+
+
 
 
 
