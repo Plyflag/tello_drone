@@ -16,11 +16,13 @@ SNClientUDP::SNClientUDP()
      etat = -2;
     }
     sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-
-    saServer.sin_family = AF_INET;
-    saServer.sin_addr.s_addr = inet_addr(adresseIPServeur);
-    saServer.sin_port = htons(portServeur);
-
+    if(sock == INVALID_SOCKET)
+    {
+        etat = -2;
+        cout << "SOCKET ERROR" << WSAGetLastError() << endl;
+    }
+    else
+        cout << "SOCKET OK" << endl;
 }
 
 SNClientUDP::~SNClientUDP()
@@ -29,14 +31,40 @@ SNClientUDP::~SNClientUDP()
 }
 
 
-bool SNClientUDP::EnvoyerMessage( char * message[])
+bool SNClientUDP::EnvoyerMessage(const char *message, int taille)
 {
+    sockaddr_in RecvAddr;
+
+    RecvAddr.sin_family = AF_INET;
+    RecvAddr.sin_addr.s_addr = inet_addr("192.168.10.1");
+    RecvAddr.sin_port = htons(8889);
+
     int iResult;
-    iResult = sendto(SendSocket, SendBuf, sizeof(message), 0, (SOCKADDR *) & saServer, sizeof (saServer));
+
+    iResult = sendto(sock, message, taille, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+
     if (iResult == SOCKET_ERROR) {
-            wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
-            closesocket(SendSocket);
-            WSACleanup();
-            return 1;
+            cout <<"sendto failed with error: %d\n" << endl;
+            closesocket(sock);
+            etat = -4;
+            return false;
     }
+
+
+    return true;
+}
+
+int SNClientUDP::RecevoirMessage()
+{
+    sockaddr_in SenderAddr;
+    int SenderAddrSize = sizeof (SenderAddr);
+    int iResult;
+    char RecvBuf[1024];
+
+    iResult = recvfrom(sock,RecvBuf, 1024, 0, (SOCKADDR *) & SenderAddr, &SenderAddrSize);
+    cout << iResult << endl;
+    cout << RecvBuf << endl;
+        if (iResult == SOCKET_ERROR) {
+            cout <<"sendto failed with error: %d\n" << endl;
+        }
 }
