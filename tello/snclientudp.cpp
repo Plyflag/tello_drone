@@ -61,10 +61,10 @@ int SNClientUDP::RecevoirMessage()
     int iResult;
     char RecvBuf[1024];
 
-    iResult = recvfrom(sock,RecvBuf, 1024, 0, (SOCKADDR *) & SenderAddr, &SenderAddrSize);
-    cout << iResult << endl;
-    cout << RecvBuf << endl;
+    iResult = recvfrom(sock,RecvBuf, sizeof(RecvBuf), 0, (SOCKADDR *) & SenderAddr, &SenderAddrSize);
         if (iResult == SOCKET_ERROR) {
             cout <<"sendto failed with error: %d\n" << endl;
         }
+    cout << iResult << endl;
+    cout << RecvBuf << endl;
 }
