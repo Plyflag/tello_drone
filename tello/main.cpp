@@ -6,7 +6,7 @@ using namespace std;
 int main()
 {
     SNClientUDP client;
-    char commande;
+    int commande;
     cout << "Menu interactif de controle du drone" << endl;
     cout << "Veuillez faire un choix (" << endl;
     cout << "1 = decoller" << endl;
@@ -23,21 +23,27 @@ int main()
         {
             case 1 : 
                 client.EnvoyerMessage("takeoff",7);
+                client.RecevoirMessage();
                 break;
             case 2 : 
                 client.EnvoyerMessage("left 5",6);
+                client.RecevoirMessage();
                 break;
             case 3 : 
                 client.EnvoyerMessage("forward 5",9);
+                client.RecevoirMessage();
                 break;
             case 4 : 
                 client.EnvoyerMessage("right 5",7);
+                client.RecevoirMessage();
                 break;
             case 5 : 
                 client.EnvoyerMessage("back 5",6);
+                client.RecevoirMessage();
                 break;  
             case 0 : 
                 client.EnvoyerMessage("emergency",9);
+                client.RecevoirMessage();
                 break;
         }
     }
