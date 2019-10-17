@@ -1,6 +1,7 @@
 #include "snclientudp.h"
 #include "main.cpp"
 #include <winsock2.h>
+using namespace std;
 
 SNClientUDP::SNClientUDP()
 {
@@ -33,15 +34,15 @@ SNClientUDP::~SNClientUDP()
 
 bool SNClientUDP::EnvoyerMessage(const char *message, int taille)
 {
-    sockaddr_in RecvAddr;
+    sockaddr_in SenderAddr;
 
-    RecvAddr.sin_family = AF_INET;
-    RecvAddr.sin_addr.s_addr = inet_addr("192.168.10.1");
-    RecvAddr.sin_port = htons(8889);
+    SenderAddr.sin_family = AF_INET;
+    SenderAddr.sin_addr.s_addr = inet_addr("192.168.10.1");
+    SenderAddr.sin_port = htons(8889);
 
     int iResult;
 
-    iResult = sendto(sock, message, taille, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+    iResult = sendto(sock, message, taille, 0, (SOCKADDR *) & SenderAddr, sizeof (SenderAddr));
 
     if (iResult == SOCKET_ERROR) {
             cout <<"sendto failed with error: %d\n" << endl;
@@ -54,17 +55,21 @@ bool SNClientUDP::EnvoyerMessage(const char *message, int taille)
     return true;
 }
 
-int SNClientUDP::RecevoirMessage()
+string SNClientUDP::RecevoirMessage()
 {
-    sockaddr_in SenderAddr;
-    int SenderAddrSize = sizeof (SenderAddr);
-    int iResult;
+    sockaddr_in RecvAddr;
+    int RecvAddrSize = sizeof (RecvAddr);
     char RecvBuf[1024];
 
-    iResult = recvfrom(sock,RecvBuf, sizeof(RecvBuf), 0, (SOCKADDR *) & SenderAddr, &SenderAddrSize);
-        if (iResult == SOCKET_ERROR) {
+    int iResult2 = recvfrom(sock,RecvBuf, sizeof(RecvBuf), 0, (SOCKADDR *) & RecvAddr, &RecvAddrSize);
+        if (iResult2 == SOCKET_ERROR) {
             cout <<"sendto failed with error: %d\n" << endl;
         }
-    cout << iResult << endl;
-    cout << RecvBuf << endl;
+    else {
+        cout << "Erreur reception" << endl;
+        cout << iResult2 << endl;
+        cout << RecvBuf << endl;
+    }
+    string str(RecvBuf);
+    return str;
 }
