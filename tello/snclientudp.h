@@ -1,6 +1,7 @@
 #ifndef SNCLIENTUDP_H
 #define SNCLIENTUDP_H
 #include <winsock2.h>
+using namespace std;
 
 class SNClientUDP {
 private :
@@ -16,7 +17,7 @@ public :
     inline void ModifierPortServeur() ;
     inline void ModifierAdresseIPServeur() ;
     bool EnvoyerMessage(const char * message, int taille);
-    int RecevoirMessage();
+    string RecevoirMessage();
 };
 
 
